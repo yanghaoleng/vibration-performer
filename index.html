@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f9f9f9" />
+    <title>震动演奏机</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-panel spring-in">
+        <div class="title-row">
+          <div>
+            <p class="eyebrow">Mickywa Vibe Lab</p>
+            <h1 data-i18n="appTitle">震动演奏机</h1>
+          </div>
+
+          <div class="top-actions">
+            <div class="language-switch" role="group" aria-label="Language">
+              <button class="seg-option is-active" type="button" data-lang="zh" aria-pressed="true">中</button>
+              <button class="seg-option" type="button" data-lang="en" aria-pressed="false">EN</button>
+              <button class="seg-option" type="button" data-lang="ja" aria-pressed="false">日</button>
+            </div>
+
+            <div class="theme-menu">
+              <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-expanded="false" data-i18n-aria="themeMenu">
+                <i data-lucide="monitor" aria-hidden="true"></i>
+              </button>
+              <div class="menu-popover" id="themeMenu" role="menu" hidden>
+                <button type="button" role="menuitemradio" data-theme-option="system" aria-checked="true">
+                  <i data-lucide="monitor" aria-hidden="true"></i>
+                  <span data-i18n="themeSystem">跟随系统</span>
+                </button>
+                <button type="button" role="menuitemradio" data-theme-option="light" aria-checked="false">
+                  <i data-lucide="sun" aria-hidden="true"></i>
+                  <span data-i18n="themeLight">亮色</span>
+                </button>
+                <button type="button" role="menuitemradio" data-theme-option="dark" aria-checked="false">
+                  <i data-lucide="moon" aria-hidden="true"></i>
+                  <span data-i18n="themeDark">暗色</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-strip">
+          <div class="micro-card">
+            <span data-i18n="modeLabel">模式</span>
+            <strong id="inputMode">触摸滑块</strong>
+          </div>
+          <div class="micro-card">
+            <span data-i18n="speedLabel">录制速度</span>
+            <strong>1/3</strong>
+          </div>
+          <div class="micro-card">
+            <span data-i18n="levelLabel">当前振幅</span>
+            <strong id="levelReadout">0%</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="studio-grid">
+        <article class="play-pad panel spring-in">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="performanceEyebrow">Performance</p>
+              <h2 data-i18n="performanceTitle">演奏</h2>
+            </div>
+            <span class="pill" id="recordState">待录制</span>
+          </div>
+
+          <div class="slider-wrap" id="sliderWrap">
+            <input id="intensitySlider" class="intensity-slider" type="range" min="0" max="100" value="0" data-i18n-aria="amplitudeLabel" />
+            <div class="slider-glow" id="sliderGlow"></div>
+          </div>
+
+          <div class="wheel-pad" id="wheelPad" tabindex="0" data-i18n-aria="wheelControl">
+            <div class="wheel-orbit">
+              <span id="wheelValue">0</span>
+            </div>
+            <p data-i18n="wheelHelp">桌面端在这里滚动鼠标滚轮</p>
+          </div>
+
+          <div class="control-row">
+            <button class="action primary" id="recordBtn" type="button" data-i18n-title="shortcutRecord">
+              <i data-lucide="circle" aria-hidden="true"></i>
+              <span data-i18n="startRecord">开始录制</span>
+            </button>
+            <button class="action" id="stopBtn" type="button" disabled data-i18n-title="shortcutStop">
+              <i data-lucide="square" aria-hidden="true"></i>
+              <span data-i18n="stop">停止</span>
+            </button>
+            <button class="action" id="clearBtn" type="button" data-i18n-title="shortcutClear">
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+              <span data-i18n="clear">清空</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="curve-panel panel spring-in">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="curveEyebrow">Curve Editor</p>
+              <h2 data-i18n="curveTitle">曲线</h2>
+            </div>
+            <button class="action compact" id="smoothBtn" type="button" data-i18n-title="shortcutSmooth">
+              <i data-lucide="wand-2" aria-hidden="true"></i>
+              <span data-i18n="smooth">平滑</span>
+            </button>
+          </div>
+          <canvas id="curveCanvas" width="1200" height="520"></canvas>
+          <div class="hint-line" data-i18n="curveHint">拖动曲线上的点来手动调整振幅</div>
+        </article>
+
+        <article class="library-panel panel spring-in">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="takesEyebrow">Takes</p>
+              <h2 data-i18n="takesTitle">片段</h2>
+            </div>
+            <button class="action compact" id="exportBtn" type="button" data-i18n-title="shortcutExport">
+              <i data-lucide="download" aria-hidden="true"></i>
+              <span data-i18n="exportJson">导出 JSON</span>
+            </button>
+          </div>
+
+          <div class="current-take" id="currentTake" aria-live="polite">
+            <span>还没有录制</span>
+            <strong>--:--.---</strong>
+          </div>
+
+          <div class="control-row">
+            <button class="action primary" id="playBtn" type="button" disabled data-i18n-title="shortcutPlay">
+              <i data-lucide="play" aria-hidden="true"></i>
+              <span data-i18n="play">播放</span>
+            </button>
+            <button class="action" id="pauseBtn" type="button" disabled data-i18n-title="shortcutStopPlayback">
+              <i data-lucide="pause" aria-hidden="true"></i>
+              <span data-i18n="stopPlayback">停止播放</span>
+            </button>
+          </div>
+
+          <textarea id="jsonOutput" spellcheck="false" data-i18n-aria="jsonOutputLabel" data-i18n-placeholder="jsonPlaceholder"></textarea>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
