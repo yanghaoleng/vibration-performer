@@ -260,7 +260,7 @@ function randomName() {
 }
 
 function refreshIcons() {
-  if (window.lucide) window.lucide.createIcons();
+  // No-op since using inline SVG
 }
 
 function pulseElement(element, className = "bump") {
@@ -285,8 +285,7 @@ function setActionLabel(button, key) {
 function renderActionButton(button, icon, labelKey) {
   if (!button || button.dataset.labelKey === labelKey) return;
   button.dataset.labelKey = labelKey;
-  button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i><span data-i18n="${labelKey}">${t(labelKey)}</span>`;
-  refreshIcons();
+  button.innerHTML = `<svg class="icon" width="18" height="18"><use href="#icon-${icon}"/></svg><span data-i18n="${labelKey}">${t(labelKey)}</span>`;
 }
 
 function isFinePointer() {
@@ -454,7 +453,6 @@ function updateInputMode() {
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-checked", String(active));
   });
-  refreshIcons();
 }
 
 function updateTakeView() {
@@ -474,23 +472,21 @@ function updateTakeView() {
         </div>
         <div class="take-item-controls">
           <button class="action compact" type="button" data-action="load" data-take-id="${take.id}">
-            <i data-lucide="folder-open" aria-hidden="true"></i>
+            <svg class="icon" width="18" height="18"><use href="#icon-folder-open"/></svg>
             <span>加载</span>
           </button>
           <button class="action compact" type="button" data-action="play" data-take-id="${take.id}">
-            <i data-lucide="play" aria-hidden="true"></i>
+            <svg class="icon" width="18" height="18"><use href="#icon-play"/></svg>
             <span>播放</span>
           </button>
           <button class="action compact" type="button" data-action="export" data-take-id="${take.id}">
-            <i data-lucide="download" aria-hidden="true"></i>
+            <svg class="icon" width="18" height="18"><use href="#icon-download"/></svg>
             <span>导出</span>
           </button>
         </div>
       </div>
     `;
   }).join("");
-
-  refreshIcons();
 
   $$('[data-action]').forEach((btn) => {
     btn.addEventListener('click', (e) => {
@@ -908,11 +904,11 @@ function applyThemePreference(preference) {
   document.documentElement.dataset.theme = resolved;
   const color = resolved === "dark" ? "#333333" : "#ffffff";
   document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
-  els.themeToggle.innerHTML = `<i data-lucide="${preference === "system" ? "monitor" : preference === "dark" ? "moon" : "sun"}" aria-hidden="true"></i>`;
+  const iconName = preference === "system" ? "monitor" : preference === "dark" ? "moon" : "sun";
+  els.themeToggle.innerHTML = `<svg class="icon" width="18" height="18"><use href="#icon-${iconName}"/></svg>`;
   $$("[data-theme-option]").forEach((button) => {
     button.setAttribute("aria-checked", String(button.dataset.themeOption === preference));
   });
-  refreshIcons();
   drawCurve();
 }
 
@@ -920,14 +916,12 @@ function toggleThemeMenu(force) {
   const willOpen = typeof force === "boolean" ? force : els.themeMenu.hidden;
   els.themeMenu.hidden = !willOpen;
   els.themeToggle.setAttribute("aria-expanded", String(willOpen));
-  if (willOpen) refreshIcons();
 }
 
 function toggleInputMenu(force) {
   const willOpen = typeof force === "boolean" ? force : els.inputMenu.hidden;
   els.inputMenu.hidden = !willOpen;
   els.inputToggle.setAttribute("aria-expanded", String(willOpen));
-  if (willOpen) refreshIcons();
 }
 
 function applyTranslations() {
@@ -954,7 +948,6 @@ function applyTranslations() {
   updateInputMode();
   renderStatus();
   updateTakeView();
-  refreshIcons();
 }
 
 function setLanguage(lang) {
