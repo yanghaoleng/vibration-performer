@@ -562,13 +562,50 @@ h2 {
   transition: transform 220ms var(--spring), background 180ms ease;
 }
 
-.current-take:hover {
+.takes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.take-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: var(--surface);
+  transition: transform 220ms var(--spring), background 180ms ease;
+}
+
+.take-item:hover {
   transform: translateY(-1px);
   background: var(--surface-strong);
 }
 
-.current-take span {
+.take-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.take-item-header span {
   font-weight: 800;
+}
+
+.take-item-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.take-item-controls .action {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.take-item.is-active {
+  background: var(--surface-strong);
+  border: 2px solid var(--green);
 }
 
 textarea {
@@ -689,6 +726,73 @@ textarea:focus {
 
 .canvas-shake {
   animation: shake-wobble 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes text-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes text-bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes text-wave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(var(--accent-rgb, 0, 0, 0), 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(var(--accent-rgb, 0, 0, 0), 0.8), 0 0 30px rgba(var(--accent-rgb, 0, 0, 0), 0.6);
+  }
+}
+
+.text-animate-fade-up {
+  animation: text-fade-in-up 0.6s var(--spring) both;
+}
+
+.text-animate-bounce {
+  animation: text-bounce-in 0.8s var(--spring) both;
+}
+
+.text-animate-wave {
+  animation: text-wave 0.6s ease-in-out both;
+}
+
+.text-animate-glow {
+  animation: text-glow 1s ease-in-out both;
+}
+
+.animate-char {
+  display: inline-block;
+  animation-delay: var(--delay, 0s);
 }
 
 @keyframes press-jump {

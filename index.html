@@ -50,6 +50,24 @@
       </section>
 
       <section class="studio-grid">
+        <article class="curve-panel panel spring-in">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-i18n="curveEyebrow">Curve Editor</p>
+              <h2 data-i18n="curveTitle">曲线</h2>
+            </div>
+            <div class="section-actions">
+              <span class="pill"><span data-i18n="speedLabel">录制速度</span> <strong>1/3</strong></span>
+              <button class="action compact" id="smoothBtn" type="button" data-i18n-title="shortcutSmooth">
+                <i data-lucide="wand-2" aria-hidden="true"></i>
+                <span data-i18n="smooth">平滑</span>
+              </button>
+            </div>
+          </div>
+          <canvas id="curveCanvas" width="1200" height="520"></canvas>
+          <div class="hint-line" data-i18n="curveHint">拖动曲线上的点来手动调整振幅</div>
+        </article>
+
         <article class="play-pad panel spring-in">
           <div class="section-head">
             <div>
@@ -123,50 +141,19 @@
           </div>
         </article>
 
-        <article class="curve-panel panel spring-in">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow" data-i18n="curveEyebrow">Curve Editor</p>
-              <h2 data-i18n="curveTitle">曲线</h2>
-            </div>
-            <div class="section-actions">
-              <span class="pill"><span data-i18n="speedLabel">录制速度</span> <strong>1/3</strong></span>
-              <button class="action compact" id="smoothBtn" type="button" data-i18n-title="shortcutSmooth">
-                <i data-lucide="wand-2" aria-hidden="true"></i>
-                <span data-i18n="smooth">平滑</span>
-              </button>
-            </div>
-          </div>
-          <canvas id="curveCanvas" width="1200" height="520"></canvas>
-          <div class="hint-line" data-i18n="curveHint">拖动曲线上的点来手动调整振幅</div>
-        </article>
-
         <article class="library-panel panel spring-in">
           <div class="section-head">
             <div>
               <p class="eyebrow" data-i18n="takesEyebrow">Takes</p>
               <h2 data-i18n="takesTitle">片段</h2>
             </div>
-            <button class="action compact" id="exportBtn" type="button" data-i18n-title="shortcutExport">
-              <i data-lucide="download" aria-hidden="true"></i>
-              <span data-i18n="exportJson">导出 JSON</span>
-            </button>
           </div>
 
-          <div class="current-take" id="currentTake" aria-live="polite">
-            <span>还没有录制</span>
-            <strong>--:--.---</strong>
-          </div>
-
-          <div class="control-row">
-            <button class="action primary" id="playBtn" type="button" disabled data-i18n-title="shortcutPlay">
-              <i data-lucide="play" aria-hidden="true"></i>
-              <span data-i18n="play">播放</span>
-            </button>
-            <button class="action" id="pauseBtn" type="button" disabled data-i18n-title="shortcutStopPlayback">
-              <i data-lucide="pause" aria-hidden="true"></i>
-              <span data-i18n="stopPlayback">停止播放</span>
-            </button>
+          <div class="takes-list" id="takesList">
+            <div class="take-item" id="currentTake" aria-live="polite">
+              <span>还没有录制</span>
+              <strong>--:--.---</strong>
+            </div>
           </div>
 
           <textarea id="jsonOutput" spellcheck="false" data-i18n-aria="jsonOutputLabel" data-i18n-placeholder="jsonPlaceholder"></textarea>

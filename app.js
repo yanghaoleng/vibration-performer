@@ -208,6 +208,8 @@ const state = {
   activeInput: "touch",
   history: [],
   redoStack: [],
+  takes: [],
+  activeTakeId: null,
 };
 
 const els = {
@@ -230,6 +232,7 @@ const els = {
   recordState: $("#recordState"),
   canvas: $("#curveCanvas"),
   currentTake: $("#currentTake"),
+  takesList: $("#takesList"),
   jsonOutput: $("#jsonOutput"),
   themeToggle: $("#themeToggle"),
   themeMenu: $("#themeMenu"),
@@ -455,14 +458,131 @@ function updateInputMode() {
 }
 
 function updateTakeView() {
-  if (!state.take) {
-    els.currentTake.innerHTML = `<span>${t("noTake")}</span><strong>--:--.---</strong>`;
+  if (!state.takes.length) {
+    els.takesList.innerHTML = `<div class="take-item" id="currentTake" aria-live="polite"><span>${t("noTake")}</span><strong>--:--.---</strong></div>`;
     els.jsonOutput.value = "";
     return;
   }
-  els.currentTake.innerHTML = `<span>${state.take.name}</span><strong>${state.take.timecode}</strong>`;
-  els.jsonOutput.value = JSON.stringify(state.take, null, 2);
-  pulseElement(els.currentTake, "status-swap");
+
+  els.takesList.innerHTML = state.takes.map((take, index) => {
+    const isActive = take.id === state.activeTakeId;
+    return `
+      <div class="take-item ${isActive ? "is-active" : ""}" data-take-id="${take.id}">
+        <div class="take-item-header">
+          <span>${take.name}</span>
+          <strong>${take.timecode}</strong>
+        </div>
+        <div class="take-item-controls">
+          <button class="action compact" type="button" data-action="load" data-take-id="${take.id}">
+            <i data-lucide="folder-open" aria-hidden="true"></i>
+            <span>加载</span>
+          </button>
+          <button class="action compact" type="button" data-action="play" data-take-id="${take.id}">
+            <i data-lucide="play" aria-hidden="true"></i>
+            <span>播放</span>
+          </button>
+          <button class="action compact" type="button" data-action="export" data-take-id="${take.id}">
+            <i data-lucide="download" aria-hidden="true"></i>
+            <span>导出</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  refreshIcons();
+
+  $$('[data-action]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const action = btn.dataset.action;
+      const takeId = btn.dataset.takeId;
+      const take = state.takes.find((t) => t.id === takeId);
+      if (!take) return;
+
+      if (action === 'load') {
+        loadTake(takeId);
+      } else if (action === 'play') {
+        playTakeById(takeId);
+      } else if (action === 'export') {
+        exportTakeById(takeId);
+      }
+    });
+  });
+
+  if (state.take) {
+    els.jsonOutput.value = JSON.stringify(state.take, null, 2);
+  }
+}
+
+function loadTake(takeId) {
+  const take = state.takes.find((t) => t.id === takeId);
+  if (!take) return;
+
+  state.take = take;
+  state.activeTakeId = takeId;
+  state.samples = cloneSamples(take.points);
+  state.history = [];
+  state.redoStack = [];
+  updateButtons();
+  renderStatus();
+  updateTakeView();
+  drawCurve();
+}
+
+function playTakeById(takeId) {
+  const take = state.takes.find((t) => t.id === takeId);
+  if (!take) return;
+
+  stopPlayback();
+  state.isPlaying = true;
+  state.statusKey = "playing";
+  renderStatus();
+  updateButtons();
+  const audio = ensureAudio();
+  const start = audio.currentTime + 0.04;
+  take.points.forEach((sample, index) => {
+    if (index % 3 !== 0 && sample.amplitude < 0.08) return;
+    playSound(sample.amplitude, start + sample.time / 1000);
+  });
+
+  if ("vibrate" in navigator) {
+    const pattern = take.points.slice(0, 80).flatMap((sample, index, arr) => {
+      const next = arr[index + 1];
+      const gap = next ? Math.max(10, next.time - sample.time) : 30;
+      return [Math.max(1, Math.round(sample.amplitude * 40)), gap];
+    });
+    navigator.vibrate(pattern);
+  }
+
+  const timer = window.setTimeout(stopPlayback, (lastSample(take.points)?.time || 0) + 180);
+  state.playTimers.push(timer);
+  
+  const activeTake = els.takesList.querySelector(`[data-take-id="${takeId}"]`);
+  if (activeTake) {
+    const nameSpan = activeTake.querySelector('.take-item-header span');
+    if (nameSpan) {
+      animateTextByCharacters(nameSpan, 'text-animate-glow', 30);
+    }
+  }
+}
+
+function exportTakeById(takeId) {
+  const take = state.takes.find((t) => t.id === takeId);
+  if (!take) return;
+
+  const json = JSON.stringify(take, null, 2);
+  els.jsonOutput.value = json;
+  const safeName = take.name.replace(/[^\u4e00-\u9fa5a-zA-Z0-9_-]/g, "");
+  const blob = new Blob([json], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${safeName || "vibration"}-${take.timecode.replace(/[:.]/g, "-")}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  navigator.clipboard?.writeText(json).catch(() => {});
 }
 
 function updateButtons() {
@@ -541,7 +661,7 @@ function finishTake() {
   state.isRecordingPaused = false;
   state.samples = decimateSamples(smoothSamples(state.samples));
   const duration = lastSample()?.time || 0;
-  state.take = {
+  const newTake = {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
     name: randomName(),
     timecode: formatTimecode(duration),
@@ -549,11 +669,24 @@ function finishTake() {
     speed: "1/3",
     points: cloneSamples(),
   };
+  state.takes.unshift(newTake);
+  state.take = newTake;
+  state.activeTakeId = newTake.id;
   state.statusKey = "finished";
   renderStatus();
   updateButtons();
   updateTakeView();
   drawCurve();
+  
+  setTimeout(() => {
+    const firstTake = els.takesList.querySelector('[data-take-id]');
+    if (firstTake) {
+      const nameSpan = firstTake.querySelector('.take-item-header span');
+      if (nameSpan) {
+        animateTextByCharacters(nameSpan, 'text-animate-wave', 40);
+      }
+    }
+  }, 50);
 }
 
 function clearTake() {
@@ -724,6 +857,16 @@ function playTake() {
 
   const timer = window.setTimeout(stopPlayback, (lastSample()?.time || 0) + 180);
   state.playTimers.push(timer);
+  
+  if (state.take && state.activeTakeId) {
+    const activeTake = els.takesList.querySelector(`[data-take-id="${state.activeTakeId}"]`);
+    if (activeTake) {
+      const nameSpan = activeTake.querySelector('.take-item-header span');
+      if (nameSpan) {
+        animateTextByCharacters(nameSpan, 'text-animate-glow', 30);
+      }
+    }
+  }
 }
 
 function stopPlayback() {
@@ -1014,6 +1157,26 @@ window.addEventListener("gamepaddisconnected", (event) => {
   }
 });
 
+function animateTextByCharacters(element, animationClass, stagger = 50) {
+  const text = element.textContent;
+  element.innerHTML = '';
+  
+  text.split('').forEach((char, index) => {
+    const span = document.createElement('span');
+    span.textContent = char === ' ' ? '\u00A0' : char;
+    span.className = `animate-char ${animationClass}`;
+    span.style.setProperty('--delay', `${index * stagger}ms`);
+    element.appendChild(span);
+  });
+}
+
+function animateTitle() {
+  const title = document.getElementById('appTitle');
+  if (title) {
+    animateTextByCharacters(title, 'text-animate-bounce', 60);
+  }
+}
+
 function replayEntranceAnimation() {
   const elements = document.querySelectorAll('.hero-panel, .panel');
   elements.forEach((el) => {
@@ -1021,6 +1184,7 @@ function replayEntranceAnimation() {
     void el.offsetWidth;
     el.style.animation = '';
   });
+  animateTitle();
 }
 
 function init() {
@@ -1036,6 +1200,8 @@ function init() {
   if (appTitle) {
     appTitle.addEventListener('click', replayEntranceAnimation);
   }
+  
+  setTimeout(animateTitle, 200);
 }
 
 window.addEventListener("resize", () => {
