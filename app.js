@@ -327,6 +327,17 @@ function markInputActivity(mode) {
   if (state.inputPreference === "auto") setActiveInput(mode);
 }
 
+function flashKeyButton(key) {
+  const keyLevel = Number(key) * 25;
+  const button = els.keyboardPad?.querySelector(`[data-key-level="${keyLevel}"]`);
+  if (button) {
+    button.classList.remove("key-flash");
+    void button.offsetWidth;
+    button.classList.add("key-flash");
+    setTimeout(() => button.classList.remove("key-flash"), 250);
+  }
+}
+
 function setLevel(value, { fromKeyboard = false } = {}) {
   const next = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
   const changed = next !== state.level;
@@ -984,14 +995,20 @@ function handleShortcut(event) {
 
   if (cmd && key === "z" && shift) redoEdit();
   else if (cmd && key === "z") undoEdit();
-  else if (key === " " || code === "Space") {
+  else if (cmd && ["1", "2", "3", "4"].includes(key)) {
+    const inputModes = ["auto", "touch", "joystick", "keyboard"];
+    const modeIndex = parseInt(key) - 1;
+    setActiveInput(inputModes[modeIndex], { remember: true });
+  } else if (key === " " || code === "Space") {
     if (!event.repeat) toggleRecordingPause();
   } else if (key === "enter") {
     if (!event.repeat) {
       if (state.isRecording) {
+        finishTake();
+      } else if (state.samples.length > 0) {
         smoothCurrentCurve();
       } else {
-        finishTake();
+        startRecording();
       }
     }
   } else if (key === "k") state.isPlaying ? stopPlayback() : playTake();
@@ -1014,6 +1031,7 @@ function handleShortcut(event) {
   else if (["1", "2", "3", "4"].includes(key)) {
     markInputActivity("keyboard");
     setLevel(Number(key) * 25, { fromKeyboard: true });
+    flashKeyButton(key);
   }
   else if (key === "0") {
     markInputActivity("keyboard");
