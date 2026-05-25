@@ -60,8 +60,9 @@ const messages = {
     shortcutRecord: "空格开始/暂停，回车开始/停止",
     shortcutStop: "回车停止录制，Esc 停止当前动作",
     shortcutClear: "Delete 清空当前片段",
-    shortcutSmooth: "S 平滑曲线",
-    shortcutExport: "E 或 Cmd/Ctrl+E 导出 JSON",
+    shortcutSmooth: "Shift+S 平滑曲线",
+    shortcutExport: "X 导出 JSON",
+    shortcutMode: "Q W E R 切换输入模式",
     shortcutPlay: "K 播放/停止",
     shortcutStopPlayback: "K 停止播放",
   },
@@ -120,8 +121,9 @@ const messages = {
     shortcutRecord: "Space starts/pauses, Enter starts/stops recording",
     shortcutStop: "Enter stops recording, Esc stops the current action",
     shortcutClear: "Delete clears the current take",
-    shortcutSmooth: "S smooths the curve",
-    shortcutExport: "E or Cmd/Ctrl+E exports JSON",
+    shortcutSmooth: "Shift+S smooths the curve",
+    shortcutExport: "X exports JSON",
+    shortcutMode: "Q W E R switch input mode",
     shortcutPlay: "K plays/stops",
     shortcutStopPlayback: "K stops playback",
   },
@@ -180,8 +182,9 @@ const messages = {
     shortcutRecord: "Space で開始/一時停止、Enter で開始/停止",
     shortcutStop: "Enter で録音停止、Esc で現在の操作を停止",
     shortcutClear: "Delete でテイクをクリア",
-    shortcutSmooth: "S でカーブをスムーズ化",
-    shortcutExport: "E または Cmd/Ctrl+E で JSON 書き出し",
+    shortcutSmooth: "Shift+S でカーブをスムーズ化",
+    shortcutExport: "X で JSON 書き出し",
+    shortcutMode: "Q W E R で入力モード切替",
     shortcutPlay: "K で再生/停止",
     shortcutStopPlayback: "K で再生停止",
   },
@@ -995,26 +998,28 @@ function handleShortcut(event) {
 
   if (cmd && key === "z" && shift) redoEdit();
   else if (cmd && key === "z") undoEdit();
-  else if (cmd && ["1", "2", "3", "4"].includes(key)) {
-    const inputModes = ["auto", "touch", "joystick", "keyboard"];
-    const modeIndex = parseInt(key) - 1;
-    setActiveInput(inputModes[modeIndex], { remember: true });
-  } else if (key === " " || code === "Space") {
+  else if (key === "q") setActiveInput("auto", { remember: true });
+  else if (key === "w") setActiveInput("touch", { remember: true });
+  else if (key === "e") setActiveInput("joystick", { remember: true });
+  else if (key === "r") setActiveInput("keyboard", { remember: true });
+  else if (key === " " || code === "Space") {
     if (!event.repeat) toggleRecordingPause();
   } else if (key === "enter") {
     if (!event.repeat) {
       if (state.isRecording) {
         finishTake();
-      } else if (state.samples.length > 0) {
-        smoothCurrentCurve();
       } else {
         startRecording();
       }
     }
   } else if (key === "k") state.isPlaying ? stopPlayback() : playTake();
-  else if (key === "r") state.isRecording ? finishTake() : startRecording();
-  else if (key === "s") smoothCurrentCurve();
-  else if (key === "e") exportJson();
+  else if (key === "s" && shift) {
+    if (!event.repeat) smoothCurrentCurve();
+  }
+  else if (key === "s") {
+    markInputActivity("keyboard");
+    setLevel(state.level + (shift ? 10 : 3), { fromKeyboard: true });
+  } else if (key === "x") exportJson();
   else if (key === "escape") {
     toggleThemeMenu(false);
     toggleInputMenu(false);
