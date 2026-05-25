@@ -260,7 +260,7 @@ function randomName() {
 }
 
 function refreshIcons() {
-  // No-op since using inline SVG
+  if (window.lucide) window.lucide.createIcons();
 }
 
 function pulseElement(element, className = "bump") {
@@ -285,7 +285,8 @@ function setActionLabel(button, key) {
 function renderActionButton(button, icon, labelKey) {
   if (!button || button.dataset.labelKey === labelKey) return;
   button.dataset.labelKey = labelKey;
-  button.innerHTML = `<svg class="icon" width="18" height="18"><use href="#icon-${icon}"/></svg><span data-i18n="${labelKey}">${t(labelKey)}</span>`;
+  button.innerHTML = `<i data-lucide="${icon}"></i><span data-i18n="${labelKey}">${t(labelKey)}</span>`;
+  refreshIcons();
 }
 
 function isFinePointer() {
@@ -472,16 +473,16 @@ function updateTakeView() {
         </div>
         <div class="take-item-controls">
           <button class="action compact" type="button" data-action="load" data-take-id="${take.id}">
-            <svg class="icon" width="18" height="18"><use href="#icon-folder-open"/></svg>
-            <span>加载</span>
+            <i data-lucide="folder-open"></i>
+            <span>${t('load') || '加载'}</span>
           </button>
           <button class="action compact" type="button" data-action="play" data-take-id="${take.id}">
-            <svg class="icon" width="18" height="18"><use href="#icon-play"/></svg>
-            <span>播放</span>
+            <i data-lucide="play"></i>
+            <span>${t('play') || '播放'}</span>
           </button>
           <button class="action compact" type="button" data-action="export" data-take-id="${take.id}">
-            <svg class="icon" width="18" height="18"><use href="#icon-download"/></svg>
-            <span>导出</span>
+            <i data-lucide="download"></i>
+            <span>${t('export') || '导出'}</span>
           </button>
         </div>
       </div>
@@ -508,6 +509,7 @@ function updateTakeView() {
   if (state.take) {
     els.jsonOutput.value = JSON.stringify(state.take, null, 2);
   }
+  refreshIcons();
 }
 
 function loadTake(takeId) {
@@ -905,7 +907,8 @@ function applyThemePreference(preference) {
   const color = resolved === "dark" ? "#333333" : "#ffffff";
   document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
   const iconName = preference === "system" ? "monitor" : preference === "dark" ? "moon" : "sun";
-  els.themeToggle.innerHTML = `<svg class="icon" width="18" height="18"><use href="#icon-${iconName}"/></svg>`;
+  els.themeToggle.innerHTML = `<i data-lucide="${iconName}"></i>`;
+  refreshIcons();
   $$("[data-theme-option]").forEach((button) => {
     button.setAttribute("aria-checked", String(button.dataset.themeOption === preference));
   });
