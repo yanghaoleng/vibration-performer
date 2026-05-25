@@ -98,8 +98,9 @@ textarea:focus-visible {
   min-height: 150px;
   padding: 30px;
   border-radius: 28px;
-  background: var(--blue-bg);
-  color: var(--blue);
+  background: transparent;
+  color: var(--text);
+  border: none;
 }
 
 .title-row,
