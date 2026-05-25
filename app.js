@@ -214,7 +214,8 @@ const els = {
   inputMode: $("#inputMode"),
   levelReadout: $("#levelReadout"),
   slider: $("#intensitySlider"),
-  sliderGlow: $("#sliderGlow"),
+  sliderFill: $("#sliderFill"),
+  sliderThumb: $("#sliderThumb"),
   sliderWrap: $("#sliderWrap"),
   wheelPad: $("#wheelPad"),
   wheelValue: $("#wheelValue"),
@@ -328,7 +329,8 @@ function setLevel(value) {
   const changed = next !== state.level;
   state.level = next;
   els.slider.value = state.level;
-  els.sliderGlow.style.height = `${state.level}%`;
+  els.sliderFill.style.width = `${state.level}%`;
+  els.sliderThumb.style.left = `${state.level}%`;
   els.wheelPad.style.setProperty("--level-ring", `${state.level * 0.14}px`);
   setText(els.wheelValue, String(state.level), changed ? "bump" : "");
   setText(els.levelReadout, `${state.level}%`, changed ? "bump" : "");
@@ -837,7 +839,13 @@ function handleShortcut(event) {
   else if (key === " " || code === "Space") {
     if (!event.repeat) toggleRecordingPause();
   } else if (key === "enter") {
-    if (!event.repeat) state.isRecording ? finishTake() : startRecording();
+    if (!event.repeat) {
+      if (state.isRecording) {
+        smoothCurrentCurve();
+      } else {
+        finishTake();
+      }
+    }
   } else if (key === "k") state.isPlaying ? stopPlayback() : playTake();
   else if (key === "r") state.isRecording ? finishTake() : startRecording();
   else if (key === "s") smoothCurrentCurve();
@@ -875,7 +883,10 @@ function smoothCurrentCurve() {
   if (state.take) state.take.points = cloneSamples();
   updateTakeView();
   drawCurve();
-  pulseElement(els.canvas);
+  els.canvas.classList.remove('canvas-shake');
+  void els.canvas.offsetWidth;
+  els.canvas.classList.add('canvas-shake');
+  setTimeout(() => els.canvas.classList.remove('canvas-shake'), 450);
 }
 
 function setLevelFromPad(clientY) {
