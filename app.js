@@ -18,12 +18,26 @@ const messages = {
     performanceTitle: "演奏",
     ready: "待录制",
     recording: "录制中",
+    paused: "已暂停",
     finished: "已完成",
     playingState: "播放中",
+    inputModeGroup: "选择输入方式",
+    inputAuto: "智能",
+    inputTouch: "触屏",
+    inputJoystick: "摇杆",
+    inputKeyboard: "键盘",
+    inputAutoTitle: "根据接入设备和最近操作自动选择",
+    inputTouchTitle: "使用触屏滑块控制振幅",
+    inputJoystickTitle: "使用摇杆、鼠标滚轮或拖动面板控制振幅",
+    inputKeyboardTitle: "使用键盘 1 到 4 控制振幅",
+    autoMode: "智能",
     wheelControl: "鼠标滚轮控制震动振幅",
-    wheelHelp: "桌面端在这里滚动鼠标滚轮",
+    wheelHelp: "拖动圆盘或滚动鼠标滚轮",
+    keyboardControl: "键盘 1 到 4 控制震动振幅",
     amplitudeLabel: "震动振幅",
     startRecord: "开始录制",
+    pauseRecord: "暂停",
+    resumeRecord: "继续",
     stop: "停止",
     clear: "清空",
     curveEyebrow: "Curve Editor",
@@ -43,13 +57,13 @@ const messages = {
     themeSystem: "跟随系统",
     themeLight: "亮色",
     themeDark: "暗色",
-    shortcutRecord: "R 开始或停止录制",
-    shortcutStop: "Esc 停止当前动作",
+    shortcutRecord: "空格开始/暂停，回车开始/停止",
+    shortcutStop: "回车停止录制，Esc 停止当前动作",
     shortcutClear: "Delete 清空当前片段",
     shortcutSmooth: "S 平滑曲线",
     shortcutExport: "E 或 Cmd/Ctrl+E 导出 JSON",
-    shortcutPlay: "Space 或 K 播放/停止",
-    shortcutStopPlayback: "Space 或 K 停止播放",
+    shortcutPlay: "K 播放/停止",
+    shortcutStopPlayback: "K 停止播放",
   },
   en: {
     htmlLang: "en",
@@ -64,12 +78,26 @@ const messages = {
     performanceTitle: "Play",
     ready: "Ready",
     recording: "Recording",
+    paused: "Paused",
     finished: "Finished",
     playingState: "Playing",
+    inputModeGroup: "Choose input mode",
+    inputAuto: "Auto",
+    inputTouch: "Touch",
+    inputJoystick: "Joystick",
+    inputKeyboard: "Keys",
+    inputAutoTitle: "Choose automatically from connected devices and recent input",
+    inputTouchTitle: "Use the touch slider to control amplitude",
+    inputJoystickTitle: "Use a joystick, mouse wheel, or drag pad to control amplitude",
+    inputKeyboardTitle: "Use keyboard keys 1 to 4 to control amplitude",
+    autoMode: "Auto",
     wheelControl: "Control vibration amplitude with the mouse wheel",
-    wheelHelp: "Scroll here on desktop",
+    wheelHelp: "Drag the dial or scroll here",
+    keyboardControl: "Control vibration amplitude with keys 1 to 4",
     amplitudeLabel: "Vibration amplitude",
     startRecord: "Record",
+    pauseRecord: "Pause",
+    resumeRecord: "Resume",
     stop: "Stop",
     clear: "Clear",
     curveEyebrow: "Curve Editor",
@@ -89,13 +117,13 @@ const messages = {
     themeSystem: "System",
     themeLight: "Light",
     themeDark: "Dark",
-    shortcutRecord: "R starts or stops recording",
-    shortcutStop: "Esc stops the current action",
+    shortcutRecord: "Space starts/pauses, Enter starts/stops recording",
+    shortcutStop: "Enter stops recording, Esc stops the current action",
     shortcutClear: "Delete clears the current take",
     shortcutSmooth: "S smooths the curve",
     shortcutExport: "E or Cmd/Ctrl+E exports JSON",
-    shortcutPlay: "Space or K plays/stops",
-    shortcutStopPlayback: "Space or K stops playback",
+    shortcutPlay: "K plays/stops",
+    shortcutStopPlayback: "K stops playback",
   },
   ja: {
     htmlLang: "ja",
@@ -110,12 +138,26 @@ const messages = {
     performanceTitle: "演奏",
     ready: "待機中",
     recording: "録音中",
+    paused: "一時停止",
     finished: "完了",
     playingState: "再生中",
+    inputModeGroup: "入力方法を選択",
+    inputAuto: "自動",
+    inputTouch: "タッチ",
+    inputJoystick: "ジョイスティック",
+    inputKeyboard: "キー",
+    inputAutoTitle: "接続デバイスと直近の操作から自動選択",
+    inputTouchTitle: "タッチスライダーで振幅を操作",
+    inputJoystickTitle: "ジョイスティック、マウスホイール、ドラッグで振幅を操作",
+    inputKeyboardTitle: "キーボードの 1 から 4 で振幅を操作",
+    autoMode: "自動",
     wheelControl: "マウスホイールで振動の振幅を調整",
-    wheelHelp: "デスクトップではここでスクロール",
+    wheelHelp: "ダイヤルをドラッグ、またはスクロール",
+    keyboardControl: "キーボードの 1 から 4 で振幅を操作",
     amplitudeLabel: "振動の振幅",
     startRecord: "録音",
+    pauseRecord: "一時停止",
+    resumeRecord: "再開",
     stop: "停止",
     clear: "クリア",
     curveEyebrow: "Curve Editor",
@@ -135,29 +177,35 @@ const messages = {
     themeSystem: "システム",
     themeLight: "ライト",
     themeDark: "ダーク",
-    shortcutRecord: "R で録音開始/停止",
-    shortcutStop: "Esc で現在の操作を停止",
+    shortcutRecord: "Space で開始/一時停止、Enter で開始/停止",
+    shortcutStop: "Enter で録音停止、Esc で現在の操作を停止",
     shortcutClear: "Delete でテイクをクリア",
     shortcutSmooth: "S でカーブをスムーズ化",
     shortcutExport: "E または Cmd/Ctrl+E で JSON 書き出し",
-    shortcutPlay: "Space または K で再生/停止",
-    shortcutStopPlayback: "Space または K で再生停止",
+    shortcutPlay: "K で再生/停止",
+    shortcutStopPlayback: "K で再生停止",
   },
 };
 
 const state = {
   isRecording: false,
+  isRecordingPaused: false,
   isPlaying: false,
   level: 0,
   samples: [],
   startAt: 0,
+  recordedElapsed: 0,
   take: null,
   dragIndex: -1,
+  isUsingJoystick: false,
+  gamepadIndex: null,
   audio: null,
   playTimers: [],
   statusKey: "ready",
-  lang: localStorage.getItem("vibe-lang") || "zh",
+  lang: localStorage.getItem("vibe-lang") || "ja",
   themePreference: localStorage.getItem("vibe-theme") || "system",
+  inputPreference: localStorage.getItem("vibe-input") || "auto",
+  activeInput: "touch",
   history: [],
   redoStack: [],
 };
@@ -167,8 +215,10 @@ const els = {
   levelReadout: $("#levelReadout"),
   slider: $("#intensitySlider"),
   sliderGlow: $("#sliderGlow"),
+  sliderWrap: $("#sliderWrap"),
   wheelPad: $("#wheelPad"),
   wheelValue: $("#wheelValue"),
+  keyboardPad: $("#keyboardPad"),
   recordBtn: $("#recordBtn"),
   stopBtn: $("#stopBtn"),
   clearBtn: $("#clearBtn"),
@@ -182,6 +232,8 @@ const els = {
   jsonOutput: $("#jsonOutput"),
   themeToggle: $("#themeToggle"),
   themeMenu: $("#themeMenu"),
+  inputToggle: $("#inputToggle"),
+  inputMenu: $("#inputMenu"),
 };
 
 const ctx = els.canvas.getContext("2d");
@@ -226,8 +278,49 @@ function setActionLabel(button, key) {
   if (label) setText(label, t(key), "status-swap");
 }
 
+function renderActionButton(button, icon, labelKey) {
+  if (!button || button.dataset.labelKey === labelKey) return;
+  button.dataset.labelKey = labelKey;
+  button.innerHTML = `<i data-lucide="${icon}" aria-hidden="true"></i><span data-i18n="${labelKey}">${t(labelKey)}</span>`;
+  refreshIcons();
+}
+
 function isFinePointer() {
   return matchMedia("(hover: hover) and (pointer: fine)").matches && innerWidth > 760 && !("ontouchstart" in window);
+}
+
+function hasTouchInput() {
+  return navigator.maxTouchPoints > 0 || matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+}
+
+function hasConnectedGamepad() {
+  return Boolean(Array.from(navigator.getGamepads?.() || []).find(Boolean));
+}
+
+function detectInputMode() {
+  if (state.gamepadIndex !== null || hasConnectedGamepad()) return "joystick";
+  if (hasTouchInput() && !isFinePointer()) return "touch";
+  if (isFinePointer()) return "joystick";
+  return "keyboard";
+}
+
+function resolveInputMode() {
+  return state.inputPreference === "auto" ? state.activeInput || detectInputMode() : state.inputPreference;
+}
+
+function setActiveInput(mode, { remember = false } = {}) {
+  if (!["auto", "touch", "joystick", "keyboard"].includes(mode)) return;
+  if (remember) {
+    state.inputPreference = mode;
+    localStorage.setItem("vibe-input", mode);
+  }
+  state.activeInput = mode === "auto" ? detectInputMode() : mode;
+  updateInputMode();
+}
+
+function markInputActivity(mode) {
+  if (!["touch", "joystick", "keyboard"].includes(mode)) return;
+  if (state.inputPreference === "auto") setActiveInput(mode);
 }
 
 function setLevel(value) {
@@ -323,6 +416,7 @@ function renderStatus() {
   const statusMap = {
     ready: "ready",
     recording: "recording",
+    paused: "paused",
     finished: "finished",
     playing: "playingState",
   };
@@ -330,7 +424,32 @@ function renderStatus() {
 }
 
 function updateInputMode() {
-  setText(els.inputMode, isFinePointer() ? t("wheelInput") : t("touchSlider"), "status-swap");
+  const mode = resolveInputMode();
+  const labelMap = {
+    touch: "touchSlider",
+    joystick: "inputJoystick",
+    keyboard: "inputKeyboard",
+  };
+  const label = t(labelMap[mode] || "touchSlider");
+  setText(els.inputMode, state.inputPreference === "auto" ? `${t("autoMode")}：${label}` : label, "status-swap");
+  document.documentElement.dataset.inputMode = mode;
+  els.sliderWrap.hidden = mode !== "touch";
+  els.wheelPad.hidden = mode !== "joystick";
+  els.keyboardPad.hidden = mode !== "keyboard";
+  const iconMap = {
+    auto: "sparkles",
+    touch: "hand",
+    joystick: "joystick",
+    keyboard: "keyboard",
+  };
+  const icon = els.inputToggle?.querySelector("i");
+  if (icon) icon.setAttribute("data-lucide", iconMap[state.inputPreference] || iconMap[mode] || "sparkles");
+  $$("[data-input-choice]").forEach((button) => {
+    const active = button.dataset.inputChoice === state.inputPreference;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-checked", String(active));
+  });
+  refreshIcons();
 }
 
 function updateTakeView() {
@@ -345,15 +464,23 @@ function updateTakeView() {
 }
 
 function updateButtons() {
-  els.recordBtn.disabled = state.isRecording;
+  els.recordBtn.disabled = state.isPlaying;
   els.stopBtn.disabled = !state.isRecording;
   els.playBtn.disabled = state.samples.length === 0 || state.isPlaying || state.isRecording;
   els.pauseBtn.disabled = !state.isPlaying;
+  if (!state.isRecording) renderActionButton(els.recordBtn, "circle", "startRecord");
+  else if (state.isRecordingPaused) renderActionButton(els.recordBtn, "play", "resumeRecord");
+  else renderActionButton(els.recordBtn, "pause", "pauseRecord");
+}
+
+function recordingElapsed() {
+  if (!state.isRecording || state.isRecordingPaused) return state.recordedElapsed;
+  return state.recordedElapsed + (nowMs() - state.startAt) / 3;
 }
 
 function recordTick() {
-  if (!state.isRecording) return;
-  const elapsed = Math.round((nowMs() - state.startAt) / 3);
+  if (!state.isRecording || state.isRecordingPaused) return;
+  const elapsed = Math.round(recordingElapsed());
   state.samples.push({ time: elapsed, amplitude: state.level / 100 });
   drawCurve();
   requestAnimationFrame(recordTick);
@@ -362,10 +489,12 @@ function recordTick() {
 function startRecording() {
   stopPlayback();
   state.isRecording = true;
+  state.isRecordingPaused = false;
   state.samples = [];
   state.take = null;
   state.history = [];
   state.redoStack = [];
+  state.recordedElapsed = 0;
   state.startAt = nowMs();
   state.statusKey = "recording";
   updateTakeView();
@@ -374,9 +503,40 @@ function startRecording() {
   recordTick();
 }
 
+function pauseRecording() {
+  if (!state.isRecording || state.isRecordingPaused) return;
+  state.recordedElapsed = recordingElapsed();
+  state.isRecordingPaused = true;
+  state.statusKey = "paused";
+  state.samples.push({ time: Math.round(state.recordedElapsed), amplitude: state.level / 100 });
+  renderStatus();
+  updateButtons();
+  drawCurve();
+}
+
+function resumeRecording() {
+  if (!state.isRecording || !state.isRecordingPaused) return;
+  state.isRecordingPaused = false;
+  state.startAt = nowMs();
+  state.statusKey = "recording";
+  renderStatus();
+  updateButtons();
+  recordTick();
+}
+
+function toggleRecordingPause() {
+  if (!state.isRecording) startRecording();
+  else if (state.isRecordingPaused) resumeRecording();
+  else pauseRecording();
+}
+
 function finishTake() {
   if (!state.isRecording) return;
+  if (!state.isRecordingPaused) {
+    state.recordedElapsed = recordingElapsed();
+  }
   state.isRecording = false;
+  state.isRecordingPaused = false;
   state.samples = decimateSamples(smoothSamples(state.samples));
   const duration = lastSample()?.time || 0;
   state.take = {
@@ -397,10 +557,12 @@ function finishTake() {
 function clearTake() {
   stopPlayback();
   state.isRecording = false;
+  state.isRecordingPaused = false;
   state.samples = [];
   state.take = null;
   state.history = [];
   state.redoStack = [];
+  state.recordedElapsed = 0;
   state.statusKey = "ready";
   updateButtons();
   renderStatus();
@@ -412,9 +574,13 @@ function canvasPoint(sample) {
   const width = els.canvas.clientWidth;
   const height = els.canvas.clientHeight;
   const duration = Math.max(1, lastSample()?.time || 1);
+  const midY = height / 2;
+  const halfHeight = Math.max(1, height / 2 - 22);
   return {
     x: (sample.time / duration) * width,
-    y: height - sample.amplitude * height,
+    y: midY - sample.amplitude * halfHeight,
+    midY,
+    halfHeight,
   };
 }
 
@@ -428,37 +594,57 @@ function drawCurve() {
   ctx.clearRect(0, 0, width, height);
 
   const styles = getComputedStyle(document.documentElement);
-  ctx.strokeStyle = styles.getPropertyValue("--grid").trim() || "rgba(0,0,0,0.12)";
+  const gridColor = styles.getPropertyValue("--grid").trim() || "rgba(0,0,0,0.12)";
+  const accent = styles.getPropertyValue("--yellow").trim() || "#8e6a08";
+  const midY = height / 2;
+  const halfHeight = Math.max(1, height / 2 - 22);
+  ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
-  for (let i = 1; i < 5; i += 1) {
-    const y = (height / 5) * i;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
+  [0.25, 0.5, 0.75, 1].forEach((ratio) => {
+    const offset = halfHeight * ratio;
+    [midY - offset, midY + offset].forEach((y) => {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    });
+  });
+
+  ctx.strokeStyle = accent;
+  ctx.globalAlpha = 0.34;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, midY);
+  ctx.lineTo(width, midY);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  const liveLevel = state.isRecording && !state.samples.length ? [{ time: 0, amplitude: state.level / 100 }] : null;
+  const samples = state.samples.length ? state.samples : liveLevel;
+  if (!samples?.length) {
+    ctx.fillStyle = accent;
+    ctx.globalAlpha = 0.16;
+    const idleBars = 18;
+    for (let i = 0; i < idleBars; i += 1) {
+      const x = (width / Math.max(1, idleBars - 1)) * i;
+      ctx.fillRect(x - 2, midY - 7, 4, 14);
+    }
+    ctx.globalAlpha = 1;
+    return;
   }
 
-  if (state.samples.length < 2) return;
-  ctx.strokeStyle = styles.getPropertyValue("--yellow").trim() || "#8e6a08";
-  ctx.lineWidth = 4;
+  const duration = Math.max(1, samples[samples.length - 1]?.time || 1);
+  const barWidth = Math.max(3, Math.min(9, width / Math.max(24, samples.length * 1.5)));
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = barWidth;
   ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.beginPath();
-  state.samples.forEach((sample, index) => {
-    const point = canvasPoint(sample);
-    if (index === 0) ctx.moveTo(point.x, point.y);
-    else ctx.lineTo(point.x, point.y);
-  });
-  ctx.stroke();
-
-  ctx.fillStyle = ctx.strokeStyle;
-  const step = Math.max(1, Math.floor(state.samples.length / 26));
-  state.samples.forEach((sample, index) => {
-    if (index % step !== 0 && index !== state.samples.length - 1) return;
-    const point = canvasPoint(sample);
+  samples.forEach((sample) => {
+    const x = (sample.time / duration) * width;
+    const size = Math.max(3, sample.amplitude * halfHeight);
     ctx.beginPath();
-    ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(x, midY - size);
+    ctx.lineTo(x, midY + size);
+    ctx.stroke();
   });
 }
 
@@ -483,7 +669,9 @@ function updateDraggedSample(clientY) {
   if (state.dragIndex < 0 || !state.take) return;
   const rect = els.canvas.getBoundingClientRect();
   const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
-  state.samples[state.dragIndex].amplitude = 1 - y / rect.height;
+  const midY = rect.height / 2;
+  const halfHeight = Math.max(1, rect.height / 2 - 22);
+  state.samples[state.dragIndex].amplitude = Math.max(0, Math.min(1, Math.abs(y - midY) / halfHeight));
   state.take.points = cloneSamples();
   updateTakeView();
   drawCurve();
@@ -573,7 +761,7 @@ function applyThemePreference(preference) {
   localStorage.setItem("vibe-theme", preference);
   const resolved = preference === "system" ? (systemTheme.matches ? "dark" : "light") : preference;
   document.documentElement.dataset.theme = resolved;
-  const color = resolved === "dark" ? "#1e1e1e" : "#f9f9f9";
+  const color = resolved === "dark" ? "#333333" : "#ffffff";
   document.querySelector('meta[name="theme-color"]').setAttribute("content", color);
   els.themeToggle.innerHTML = `<i data-lucide="${preference === "system" ? "monitor" : preference === "dark" ? "moon" : "sun"}" aria-hidden="true"></i>`;
   $$("[data-theme-option]").forEach((button) => {
@@ -587,6 +775,13 @@ function toggleThemeMenu(force) {
   const willOpen = typeof force === "boolean" ? force : els.themeMenu.hidden;
   els.themeMenu.hidden = !willOpen;
   els.themeToggle.setAttribute("aria-expanded", String(willOpen));
+  if (willOpen) refreshIcons();
+}
+
+function toggleInputMenu(force) {
+  const willOpen = typeof force === "boolean" ? force : els.inputMenu.hidden;
+  els.inputMenu.hidden = !willOpen;
+  els.inputToggle.setAttribute("aria-expanded", String(willOpen));
   if (willOpen) refreshIcons();
 }
 
@@ -629,24 +824,45 @@ function handleShortcut(event) {
   if (editingText) return;
 
   const key = event.key.toLowerCase();
+  const code = event.code;
+  const isRecordShortcut = key === "enter" || key === " " || code === "Space";
+  const focusedCommandButton = target instanceof HTMLButtonElement && target !== els.recordBtn && target !== els.stopBtn;
+  if (isRecordShortcut && focusedCommandButton) return;
   const cmd = event.metaKey || event.ctrlKey;
   const shift = event.shiftKey;
   let handled = true;
 
   if (cmd && key === "z" && shift) redoEdit();
   else if (cmd && key === "z") undoEdit();
-  else if (key === " " || key === "k") state.isPlaying ? stopPlayback() : playTake();
+  else if (key === " " || code === "Space") {
+    if (!event.repeat) toggleRecordingPause();
+  } else if (key === "enter") {
+    if (!event.repeat) state.isRecording ? finishTake() : startRecording();
+  } else if (key === "k") state.isPlaying ? stopPlayback() : playTake();
   else if (key === "r") state.isRecording ? finishTake() : startRecording();
   else if (key === "s") smoothCurrentCurve();
   else if (key === "e") exportJson();
   else if (key === "escape") {
     toggleThemeMenu(false);
+    toggleInputMenu(false);
     if (state.isRecording) finishTake();
     else stopPlayback();
   } else if (key === "delete" || key === "backspace") clearTake();
-  else if (key === "arrowup" || key === "=" || key === "+") setLevel(state.level + (shift ? 10 : 3));
-  else if (key === "arrowdown" || key === "-" || key === "_") setLevel(state.level - (shift ? 10 : 3));
-  else if (key === "0") setLevel(0);
+  else if (key === "arrowup" || key === "=" || key === "+") {
+    markInputActivity("keyboard");
+    setLevel(state.level + (shift ? 10 : 3));
+  } else if (key === "arrowdown" || key === "-" || key === "_") {
+    markInputActivity("keyboard");
+    setLevel(state.level - (shift ? 10 : 3));
+  }
+  else if (["1", "2", "3", "4"].includes(key)) {
+    markInputActivity("keyboard");
+    setLevel(Number(key) * 25);
+  }
+  else if (key === "0") {
+    markInputActivity("keyboard");
+    setLevel(0);
+  }
   else handled = false;
 
   if (handled) event.preventDefault();
@@ -662,19 +878,74 @@ function smoothCurrentCurve() {
   pulseElement(els.canvas);
 }
 
-els.slider.addEventListener("input", (event) => setLevel(event.target.value));
+function setLevelFromPad(clientY) {
+  const rect = els.wheelPad.getBoundingClientRect();
+  const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+  setLevel(100 - (y / rect.height) * 100);
+}
+
+function pollGamepad() {
+  const pads = Array.from(navigator.getGamepads?.() || []);
+  const pad = state.gamepadIndex === null ? pads.find(Boolean) : pads[state.gamepadIndex];
+  if (pad) {
+    state.gamepadIndex = pad.index;
+    if (state.inputPreference === "auto" && resolveInputMode() !== "joystick") setActiveInput("joystick");
+    const verticalAxis = Math.abs(pad.axes[1] || 0) >= Math.abs(pad.axes[0] || 0) ? pad.axes[1] || 0 : pad.axes[0] || 0;
+    if (Math.abs(verticalAxis) > 0.08) setLevel((1 - verticalAxis) * 50);
+    pad.buttons.slice(0, 4).forEach((button, index) => {
+      if (button?.pressed) setLevel((index + 1) * 25);
+    });
+  }
+  requestAnimationFrame(pollGamepad);
+}
+
+els.slider.addEventListener("pointerdown", () => markInputActivity("touch"));
+els.slider.addEventListener("input", (event) => {
+  markInputActivity("touch");
+  setLevel(event.target.value);
+});
 els.wheelPad.addEventListener("wheel", (event) => {
   event.preventDefault();
+  markInputActivity("joystick");
   setLevel(state.level - event.deltaY * 0.08);
 }, { passive: false });
+els.wheelPad.addEventListener("pointerdown", (event) => {
+  markInputActivity("joystick");
+  state.isUsingJoystick = true;
+  els.wheelPad.setPointerCapture(event.pointerId);
+  setLevelFromPad(event.clientY);
+});
+els.wheelPad.addEventListener("pointermove", (event) => {
+  if (!state.isUsingJoystick) return;
+  setLevelFromPad(event.clientY);
+});
+els.wheelPad.addEventListener("pointerup", () => {
+  state.isUsingJoystick = false;
+});
+els.wheelPad.addEventListener("pointercancel", () => {
+  state.isUsingJoystick = false;
+});
 
-els.recordBtn.addEventListener("click", startRecording);
+els.recordBtn.addEventListener("click", toggleRecordingPause);
 els.stopBtn.addEventListener("click", finishTake);
 els.clearBtn.addEventListener("click", clearTake);
 els.smoothBtn.addEventListener("click", smoothCurrentCurve);
 els.exportBtn.addEventListener("click", exportJson);
 els.playBtn.addEventListener("click", playTake);
 els.pauseBtn.addEventListener("click", stopPlayback);
+els.inputToggle.addEventListener("click", () => toggleInputMenu());
+$$("[data-input-choice]").forEach((button) => {
+  button.addEventListener("click", () => {
+    setActiveInput(button.dataset.inputChoice, { remember: true });
+    toggleInputMenu(false);
+  });
+});
+$$("[data-key-level]").forEach((button) => {
+  button.addEventListener("click", () => {
+    markInputActivity("keyboard");
+    setLevel(button.dataset.keyLevel);
+  });
+});
 
 els.canvas.addEventListener("pointerdown", (event) => {
   if (!state.samples.length || !state.take) return;
@@ -697,6 +968,7 @@ els.canvas.addEventListener("pointercancel", () => {
 
 els.themeToggle.addEventListener("click", () => toggleThemeMenu());
 document.querySelector(".theme-menu").addEventListener("click", (event) => event.stopPropagation());
+document.querySelector(".input-menu").addEventListener("click", (event) => event.stopPropagation());
 $$("[data-theme-option]").forEach((button) => {
   button.addEventListener("click", () => {
     applyThemePreference(button.dataset.themeOption);
@@ -710,6 +982,7 @@ $$("[data-lang]").forEach((button) => {
 
 document.addEventListener("click", (event) => {
   if (!event.target.closest?.(".theme-menu")) toggleThemeMenu(false);
+  if (!event.target.closest?.(".input-menu")) toggleInputMenu(false);
 });
 document.addEventListener("keydown", handleShortcut);
 const onSystemThemeChange = () => {
@@ -718,12 +991,26 @@ const onSystemThemeChange = () => {
 if (systemTheme.addEventListener) systemTheme.addEventListener("change", onSystemThemeChange);
 else systemTheme.addListener(onSystemThemeChange);
 
+window.addEventListener("gamepadconnected", (event) => {
+  state.gamepadIndex = event.gamepad.index;
+  if (state.inputPreference === "auto") setActiveInput("joystick");
+});
+
+window.addEventListener("gamepaddisconnected", (event) => {
+  if (state.gamepadIndex === event.gamepad.index) {
+    state.gamepadIndex = null;
+    if (state.inputPreference === "auto") setActiveInput("auto");
+  }
+});
+
 function init() {
   applyThemePreference(state.themePreference);
   applyTranslations();
+  setActiveInput(state.inputPreference);
   setLevel(0);
   updateButtons();
   drawCurve();
+  pollGamepad();
 }
 
 window.addEventListener("resize", () => {

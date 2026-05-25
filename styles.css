@@ -1,6 +1,6 @@
 :root {
   color-scheme: light;
-  --bg: #f9f9f9;
+  --bg: #ffffff;
   --text: #3a3a3a;
   --muted: rgba(58, 58, 58, 0.62);
   --panel: #ffffff;
@@ -15,14 +15,14 @@
   --surface: rgba(255, 255, 255, 0.48);
   --surface-strong: rgba(255, 255, 255, 0.72);
   --grid: rgba(58, 58, 58, 0.12);
-  --shadow: 0 24px 70px rgba(8, 58, 142, 0.12);
+  --shadow: none;
   --border: rgba(58, 58, 58, 0.1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #1e1e1e;
+  --bg: #333333;
   --text: #ffffff;
   --muted: rgba(255, 255, 255, 0.64);
   --panel: rgba(255, 255, 255, 0.07);
@@ -37,7 +37,7 @@
   --surface: rgba(255, 255, 255, 0.1);
   --surface-strong: rgba(255, 255, 255, 0.16);
   --grid: rgba(255, 255, 255, 0.14);
-  --shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+  --shadow: none;
   --border: rgba(255, 255, 255, 0.11);
 }
 
@@ -69,6 +69,10 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
@@ -85,13 +89,13 @@ textarea:focus-visible {
 .hero-panel,
 .panel {
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: none;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
 }
 
 .hero-panel {
-  min-height: 210px;
+  min-height: 150px;
   padding: 30px;
   border-radius: 28px;
   background: var(--blue-bg);
@@ -101,7 +105,6 @@ textarea:focus-visible {
 .title-row,
 .section-head,
 .control-row,
-.status-strip,
 .top-actions,
 .language-switch,
 .action {
@@ -153,8 +156,7 @@ h2 {
   transition:
     transform 220ms var(--spring),
     opacity 180ms ease,
-    background 180ms ease,
-    box-shadow 220ms ease;
+    background 180ms ease;
 }
 
 .icon-button:hover,
@@ -209,11 +211,19 @@ h2 {
 
 .seg-option.is-active {
   background: var(--surface-strong);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
-.theme-menu {
+.theme-menu,
+.input-menu {
   position: relative;
+}
+
+.section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .menu-popover {
@@ -226,7 +236,7 @@ h2 {
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--bg);
-  box-shadow: var(--shadow);
+  box-shadow: none;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   transform-origin: top right;
@@ -250,37 +260,11 @@ h2 {
   background: var(--surface-strong);
 }
 
-.status-strip {
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 34px;
-}
-
-.micro-card {
-  min-width: 128px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: var(--surface);
-  transition: transform 220ms var(--spring), background 180ms ease;
-}
-
-.micro-card:hover {
-  transform: translateY(-2px);
-  background: var(--surface-strong);
-}
-
-.status-strip span,
 .hint-line {
   display: block;
   color: currentColor;
   font-size: 12px;
   opacity: 0.66;
-}
-
-.status-strip strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 18px;
 }
 
 .studio-grid {
@@ -294,7 +278,7 @@ h2 {
   border-radius: 28px;
   background: var(--panel);
   padding: 22px;
-  transition: transform 240ms var(--spring), box-shadow 240ms ease;
+  transition: transform 240ms var(--spring);
 }
 
 .panel:hover {
@@ -302,18 +286,21 @@ h2 {
 }
 
 .play-pad {
+  --panel-accent: var(--pink);
   background: var(--pink-bg);
   color: var(--pink);
   animation-delay: 70ms;
 }
 
 .curve-panel {
+  --panel-accent: var(--yellow);
   background: var(--yellow-bg);
   color: var(--yellow);
   animation-delay: 130ms;
 }
 
 .library-panel {
+  --panel-accent: var(--green);
   grid-column: 1 / -1;
   background: var(--green-bg);
   color: var(--green);
@@ -329,11 +316,15 @@ h2 {
   transition: transform 220ms var(--spring), background 180ms ease;
 }
 
+.pill strong {
+  font-size: 14px;
+}
+
 .slider-wrap {
   position: relative;
   display: grid;
   min-height: 270px;
-  margin: 18px 0;
+  margin: 12px 0 18px;
   place-items: center;
   border-radius: 18px;
   background: var(--surface);
@@ -379,14 +370,16 @@ h2 {
 }
 
 .wheel-pad {
-  display: none;
+  display: grid;
   min-height: 270px;
-  margin: 18px 0;
+  margin: 12px 0 18px;
   place-items: center;
   border-radius: 18px;
   background: var(--surface);
   outline: none;
   text-align: center;
+  touch-action: none;
+  user-select: none;
   transition: transform 220ms var(--spring), background 180ms ease;
 }
 
@@ -414,6 +407,53 @@ h2 {
   opacity: 0.68;
 }
 
+.keyboard-pad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  min-height: 270px;
+  margin: 12px 0 18px;
+  align-content: center;
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 18px;
+}
+
+.keyboard-pad button {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface-strong);
+  color: currentColor;
+  cursor: pointer;
+  font-weight: 800;
+  transition:
+    transform 220ms var(--spring),
+    background 180ms ease;
+}
+
+.keyboard-pad button:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.keyboard-pad button:active {
+  transform: scale(0.94) translateY(1px);
+}
+
+.keyboard-pad kbd {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--panel-accent, currentColor);
+  color: var(--bg);
+  font: inherit;
+}
+
 .control-row {
   flex-wrap: wrap;
   gap: 10px;
@@ -429,7 +469,7 @@ h2 {
 }
 
 .action.primary {
-  background: currentColor;
+  background: var(--panel-accent, currentColor);
   color: var(--bg);
 }
 
@@ -522,6 +562,10 @@ textarea:focus {
   animation: shake-soft 360ms var(--spring) both;
 }
 
+.press-jump {
+  animation: press-jump 280ms var(--spring) both;
+}
+
 @keyframes spring-scale-in {
   from {
     opacity: 0;
@@ -580,13 +624,18 @@ textarea:focus {
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .slider-wrap {
-    display: none;
+@keyframes press-jump {
+  0% {
+    transform: translateY(0) scale(1);
   }
-
-  .wheel-pad {
-    display: grid;
+  44% {
+    transform: translateY(-7px) scale(1.04);
+  }
+  72% {
+    transform: translateY(2px) scale(0.98);
+  }
+  100% {
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -615,22 +664,6 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
-  .slider-wrap {
-    display: grid;
-  }
-
-  .wheel-pad {
-    display: none;
-  }
-
-  .status-strip {
-    margin-top: 26px;
-  }
-
-  .micro-card {
-    flex: 1 1 120px;
-  }
-
   .current-take {
     display: block;
   }
@@ -643,6 +676,10 @@ textarea:focus {
   .control-row .action {
     flex: 1 1 auto;
     justify-content: center;
+  }
+
+  .keyboard-pad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
