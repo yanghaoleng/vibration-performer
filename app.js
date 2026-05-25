@@ -62,7 +62,7 @@ const messages = {
     shortcutClear: "Delete 清空当前片段",
     shortcutSmooth: "Shift+S 平滑曲线",
     shortcutExport: "X 导出 JSON",
-    shortcutMode: "Q W E R 切换输入模式",
+    shortcutMode: "Q E R 切换输入模式",
     shortcutPlay: "K 播放/停止",
     shortcutStopPlayback: "K 停止播放",
   },
@@ -123,7 +123,7 @@ const messages = {
     shortcutClear: "Delete clears the current take",
     shortcutSmooth: "Shift+S smooths the curve",
     shortcutExport: "X exports JSON",
-    shortcutMode: "Q W E R switch input mode",
+    shortcutMode: "Q E R switch input mode",
     shortcutPlay: "K plays/stops",
     shortcutStopPlayback: "K stops playback",
   },
@@ -184,7 +184,7 @@ const messages = {
     shortcutClear: "Delete でテイクをクリア",
     shortcutSmooth: "Shift+S でカーブをスムーズ化",
     shortcutExport: "X で JSON 書き出し",
-    shortcutMode: "Q W E R で入力モード切替",
+    shortcutMode: "Q E R で入力モード切替",
     shortcutPlay: "K で再生/停止",
     shortcutStopPlayback: "K で再生停止",
   },
@@ -306,7 +306,7 @@ function hasConnectedGamepad() {
 
 function detectInputMode() {
   if (state.gamepadIndex !== null || hasConnectedGamepad()) return "joystick";
-  if (hasTouchInput() && !isFinePointer()) return "touch";
+  if (hasTouchInput() && !isFinePointer()) return "joystick";
   if (isFinePointer()) return "joystick";
   return "keyboard";
 }
@@ -316,17 +316,20 @@ function resolveInputMode() {
 }
 
 function setActiveInput(mode, { remember = false } = {}) {
-  if (!["auto", "touch", "joystick", "keyboard"].includes(mode)) return;
+  if (!["auto", "joystick", "keyboard"].includes(mode)) return;
   if (remember) {
     state.inputPreference = mode;
     localStorage.setItem("vibe-input", mode);
   }
   state.activeInput = mode === "auto" ? detectInputMode() : mode;
+  if (state.activeInput === "keyboard") {
+    setLevel(0);
+  }
   updateInputMode();
 }
 
 function markInputActivity(mode) {
-  if (!["touch", "joystick", "keyboard"].includes(mode)) return;
+  if (!["joystick", "keyboard"].includes(mode)) return;
   if (state.inputPreference === "auto") setActiveInput(mode);
 }
 
@@ -454,19 +457,17 @@ function renderStatus() {
 function updateInputMode() {
   const mode = resolveInputMode();
   const labelMap = {
-    touch: "touchSlider",
     joystick: "inputJoystick",
     keyboard: "inputKeyboard",
   };
-  const label = t(labelMap[mode] || "touchSlider");
+  const label = t(labelMap[mode] || "inputJoystick");
   setText(els.inputMode, state.inputPreference === "auto" ? `${t("autoMode")}：${label}` : label, "status-swap");
   document.documentElement.dataset.inputMode = mode;
-  els.sliderWrap.hidden = mode !== "touch";
+  els.sliderWrap.hidden = mode !== "keyboard";
   els.wheelPad.hidden = mode !== "joystick";
   els.keyboardPad.hidden = mode !== "keyboard";
   const iconMap = {
     auto: "sparkles",
-    touch: "hand",
     joystick: "joystick",
     keyboard: "keyboard",
   };
@@ -999,7 +1000,6 @@ function handleShortcut(event) {
   if (cmd && key === "z" && shift) redoEdit();
   else if (cmd && key === "z") undoEdit();
   else if (key === "q") setActiveInput("auto", { remember: true });
-  else if (key === "w") setActiveInput("touch", { remember: true });
   else if (key === "e") setActiveInput("joystick", { remember: true });
   else if (key === "r") setActiveInput("keyboard", { remember: true });
   else if (key === " " || code === "Space") {
