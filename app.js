@@ -1003,6 +1003,15 @@ window.addEventListener("gamepaddisconnected", (event) => {
   }
 });
 
+function replayEntranceAnimation() {
+  const elements = document.querySelectorAll('.hero-panel, .panel');
+  elements.forEach((el) => {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
+}
+
 function init() {
   applyThemePreference(state.themePreference);
   applyTranslations();
@@ -1011,6 +1020,11 @@ function init() {
   updateButtons();
   drawCurve();
   pollGamepad();
+
+  const appTitle = document.getElementById('appTitle');
+  if (appTitle) {
+    appTitle.addEventListener('click', replayEntranceAnimation);
+  }
 }
 
 window.addEventListener("resize", () => {
