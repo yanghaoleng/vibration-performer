@@ -327,13 +327,15 @@ function markInputActivity(mode) {
   if (state.inputPreference === "auto") setActiveInput(mode);
 }
 
-function setLevel(value) {
+function setLevel(value, { fromKeyboard = false } = {}) {
   const next = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
   const changed = next !== state.level;
   state.level = next;
   els.slider.value = state.level;
   els.sliderFill.style.width = `${state.level}%`;
+  els.sliderFill.style.height = `${state.level}%`;
   els.sliderThumb.style.left = `${state.level}%`;
+  els.sliderThumb.style.bottom = `${state.level}%`;
   els.wheelPad.style.setProperty("--level-ring", `${state.level * 0.14}px`);
   setText(els.wheelValue, String(state.level), changed ? "bump" : "");
   setText(els.levelReadout, `${state.level}%`, changed ? "bump" : "");
@@ -341,6 +343,13 @@ function setLevel(value) {
     els.wheelPad.classList.add("is-live");
     window.clearTimeout(state.wheelPulseTimer);
     state.wheelPulseTimer = window.setTimeout(() => els.wheelPad.classList.remove("is-live"), 180);
+    
+    if (fromKeyboard && els.sliderWrap) {
+      els.sliderWrap.classList.remove("is-key-active");
+      void els.sliderWrap.offsetWidth;
+      els.sliderWrap.classList.add("is-key-active");
+      setTimeout(() => els.sliderWrap.classList.remove("is-key-active"), 200);
+    }
   }
 }
 
@@ -997,18 +1006,18 @@ function handleShortcut(event) {
   } else if (key === "delete" || key === "backspace") clearTake();
   else if (key === "arrowup" || key === "=" || key === "+") {
     markInputActivity("keyboard");
-    setLevel(state.level + (shift ? 10 : 3));
+    setLevel(state.level + (shift ? 10 : 3), { fromKeyboard: true });
   } else if (key === "arrowdown" || key === "-" || key === "_") {
     markInputActivity("keyboard");
-    setLevel(state.level - (shift ? 10 : 3));
+    setLevel(state.level - (shift ? 10 : 3), { fromKeyboard: true });
   }
   else if (["1", "2", "3", "4"].includes(key)) {
     markInputActivity("keyboard");
-    setLevel(Number(key) * 25);
+    setLevel(Number(key) * 25, { fromKeyboard: true });
   }
   else if (key === "0") {
     markInputActivity("keyboard");
-    setLevel(0);
+    setLevel(0, { fromKeyboard: true });
   }
   else handled = false;
 
@@ -1093,7 +1102,7 @@ $$("[data-input-choice]").forEach((button) => {
 $$("[data-key-level]").forEach((button) => {
   button.addEventListener("click", () => {
     markInputActivity("keyboard");
-    setLevel(button.dataset.keyLevel);
+    setLevel(button.dataset.keyLevel, { fromKeyboard: true });
   });
 });
 

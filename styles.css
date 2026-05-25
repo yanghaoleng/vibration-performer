@@ -8,6 +8,7 @@
   --blue: #083a8e;
   --pink-bg: #ffe4e6;
   --pink: #8e083a;
+  --pink-rgb: 142, 8, 58;
   --yellow-bg: #fef3c7;
   --yellow: #8e6a08;
   --green-bg: #e6f4ea;
@@ -30,6 +31,7 @@
   --blue: #d3f1ff;
   --pink-bg: rgba(142, 8, 58, 0.25);
   --pink: #ffd3f1;
+  --pink-rgb: 255, 211, 241;
   --yellow-bg: rgba(142, 106, 8, 0.25);
   --yellow: #fff4d3;
   --green-bg: rgba(8, 142, 58, 0.25);
@@ -284,7 +286,7 @@ h2 {
 
 .studio-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.45fr);
+  grid-template-columns: 1.3fr 1fr;
   gap: 18px;
   margin-top: 18px;
 }
@@ -304,6 +306,7 @@ h2 {
 
 .play-pad {
   --panel-accent: var(--pink);
+  --pink-rgb: 142, 8, 58;
   background: var(--pink-bg);
   color: var(--pink);
   animation-delay: 80ms;
@@ -342,12 +345,51 @@ h2 {
   display: flex;
   align-items: center;
   min-height: 80px;
+  height: 100%;
   margin: 12px 0 18px;
   padding: 0 20px;
   border-radius: 18px;
   background: var(--surface);
   overflow: hidden;
   transition: transform 220ms var(--spring), background 180ms ease;
+}
+
+@media (min-width: 761px) {
+  .slider-wrap {
+    min-height: 200px;
+    height: auto;
+    flex-direction: column;
+    padding: 20px 0;
+  }
+  
+  .slider-wrap .slider-track {
+    width: 8px;
+    height: 100%;
+    min-height: 160px;
+    flex: 1;
+  }
+  
+  .slider-wrap .slider-fill {
+    width: 100%;
+    height: 0;
+    left: 0;
+    bottom: 0;
+    top: auto;
+    transition: height 100ms var(--spring);
+  }
+  
+  .slider-wrap .slider-thumb {
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translateX(-50%);
+    transition: bottom 100ms var(--spring), left 100ms var(--spring);
+  }
+  
+  .slider-wrap .intensity-slider {
+    writing-mode: vertical-lr;
+    direction: rtl;
+  }
 }
 
 .slider-wrap:focus-within,
@@ -398,6 +440,8 @@ h2 {
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  touch-action: none;
+  user-select: none;
 }
 
 .intensity-slider::-webkit-slider-thumb {
@@ -407,10 +451,18 @@ h2 {
   border-radius: 14px;
   background: transparent;
   cursor: grab;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .intensity-slider:active::-webkit-slider-thumb {
   cursor: grabbing;
+}
+
+@media (min-width: 761px) {
+  .intensity-slider::-webkit-slider-thumb {
+    width: 48px;
+    height: 28px;
+  }
 }
 
 .wheel-pad {
@@ -647,6 +699,25 @@ textarea:focus {
   animation: press-jump 280ms var(--spring) both;
 }
 
+@keyframes slider-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--pink-rgb, 142, 8, 58), 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(var(--pink-rgb, 142, 8, 58), 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--pink-rgb, 142, 8, 58), 0);
+  }
+}
+
+.slider-wrap.is-key-active {
+  animation: slider-pulse 200ms var(--spring) both;
+}
+
 @keyframes spring-scale-in {
   from {
     opacity: 0;
@@ -707,19 +778,19 @@ textarea:focus {
 
 @keyframes shake-wobble {
   0%, 100% {
-    transform: translateX(0);
+    transform: translateY(0);
   }
   20% {
-    transform: translateX(-6px);
+    transform: translateY(-6px);
   }
   40% {
-    transform: translateX(6px);
+    transform: translateY(6px);
   }
   60% {
-    transform: translateX(-4px);
+    transform: translateY(-4px);
   }
   80% {
-    transform: translateX(4px);
+    transform: translateY(4px);
   }
 }
 
