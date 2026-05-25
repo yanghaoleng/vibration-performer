@@ -586,8 +586,8 @@ function exportTakeById(takeId) {
 function updateButtons() {
   els.recordBtn.disabled = state.isPlaying;
   els.stopBtn.disabled = !state.isRecording;
-  els.playBtn.disabled = state.samples.length === 0 || state.isPlaying || state.isRecording;
-  els.pauseBtn.disabled = !state.isPlaying;
+  els.playBtn && (els.playBtn.disabled = state.samples.length === 0 || state.isPlaying || state.isRecording);
+  els.pauseBtn && (els.pauseBtn.disabled = !state.isPlaying);
   if (!state.isRecording) renderActionButton(els.recordBtn, "circle", "startRecord");
   else if (state.isRecordingPaused) renderActionButton(els.recordBtn, "play", "resumeRecord");
   else renderActionButton(els.recordBtn, "pause", "pauseRecord");
@@ -1080,9 +1080,9 @@ els.recordBtn.addEventListener("click", toggleRecordingPause);
 els.stopBtn.addEventListener("click", finishTake);
 els.clearBtn.addEventListener("click", clearTake);
 els.smoothBtn.addEventListener("click", smoothCurrentCurve);
-els.exportBtn.addEventListener("click", exportJson);
-els.playBtn.addEventListener("click", playTake);
-els.pauseBtn.addEventListener("click", stopPlayback);
+els.exportBtn?.addEventListener("click", exportJson);
+els.playBtn?.addEventListener("click", playTake);
+els.pauseBtn?.addEventListener("click", stopPlayback);
 els.inputToggle.addEventListener("click", () => toggleInputMenu());
 $$("[data-input-choice]").forEach((button) => {
   button.addEventListener("click", () => {
