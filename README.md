@@ -58,3 +58,7 @@ http://127.0.0.1:4173
 ## 浏览器说明
 
 网站是纯静态实现，重点适配 Safari。iOS Safari 通常不开放 Web Vibration API，因此手机线性马达演示会在支持 `navigator.vibrate` 的浏览器或安卓设备上生效；不支持时仍可通过低频音效预览震动节奏。
+
+## 第三方许可
+
+Lucide / Feather 图标的原始许可及核查范围见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。这些许可仅适用于相应第三方内容，不构成本项目整体的授权声明。
